@@ -1,0 +1,73 @@
+//create data 
+POST http://localhost:8080/user
+Content-Type: application/json
+
+{
+    "name" : "Haris",
+    "email": "haris@gmail.com",
+    "password": "Abc123",
+    "confPassword" : "Abc123",
+    "role" : "user"
+}
+
+
+###
+//get Data
+GET http://localhost:8080/user
+
+###
+//get Data by id
+GET http://localhost:8080/user/ca981c82-53ec-4459-9e37-cfba596749bf
+
+
+###
+//update data
+PATCH  http://localhost:8080/user/ca981c82-53ec-4459-9e37-cfba596749bf
+Content-Type: application/json
+
+{
+    "name" : "Daffa Uppdate",
+    "email": "daffa@gmail.com",
+    "password": "Abc123",
+    "confPassword" : "Abc123",
+    "role" : "admin"
+}
+
+
+###
+//delete data
+DELETE  http://localhost:8080/user/ca981c82-53ec-4459-9e37-cfba596749bf
+
+
+###
+//login
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+    "email": "haris@gmail.com",
+    "password": "Abc123"
+}
+
+
+//login
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+    "email": "daffa@gmail.com",
+    "password": "Abc123"
+}
+
+
+
+
+###
+//get 
+GET http://localhost:8080/me
+
+
+//logout
+###
+DELETE  http://localhost:8080/logout
