@@ -10,12 +10,12 @@ const Userlist = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:5000/users");
+    const response = await axios.get("http://localhost:8080/user");
     setUsers(response.data);
   };
 
   const deleteUser = async (userId) => {
-    await axios.delete(`http://localhost:5000/users/${userId}`);
+    await axios.delete(`http://localhost:8080/user/${userId}`);
     getUsers();
   };
 
@@ -44,16 +44,10 @@ const Userlist = () => {
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                <Link
-                  to={`/users/edit/${user.uuid}`}
-                  className="button is-small is-info"
-                >
+                <Link to={`/users/edit/${user.uuid}`} className="button is-small is-info">
                   Edit
                 </Link>
-                <button
-                  onClick={() => deleteUser(user.uuid)}
-                  className="button is-small is-danger"
-                >
+                <button onClick={() => deleteUser(user.uuid)} className="button is-small is-danger">
                   Delete
                 </button>
               </td>
