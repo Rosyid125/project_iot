@@ -4,11 +4,7 @@ import Login from "./components/Login";
 import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
 import EditUser from "./pages/EditUser";
-<<<<<<< Updated upstream
 import LandingPage from "./components/landingpage";
-=======
-import LandingPage from "./pages/LandingPage";
->>>>>>> Stashed changes
 
 function App() {
   return (
