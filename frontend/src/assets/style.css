@@ -1,69 +1,38 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
-
 /* headerstyling */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background: #131200;
-  color: white;
-  font-family: "Poppins", sans-serif;
-}
 
 a {
   text-decoration: 0;
-}
-
-header {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-header:before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 60vh;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(to top, #131200, #13120000);
 }
 
 nav,
 .header-bottom {
   display: flex;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 0.8rem;
   position: relative;
 }
 
-.logo a {
-  color: white;
-  font-size: 2rem;
+.logo {
+  width: 50px;
+  height: 50px;
 }
 
-.logo a:hover {
-  color: #131200;
+.logo:hover {
+  opacity: 0.5;
 }
 
 .btn-sign-in {
   padding: 0.7rem 2rem;
-  background: #131200;
+  background: #08cc94;
   color: white;
   font-weight: 500;
-  border-radius: 50px;
+  border-radius: 5px;
   transition: 0.3s;
 }
 
 .btn-sign-in:hover {
-  background: white;
-  color: #131200;
+  background: #08c48c;
+  color: white;
 }
 
 .header-title {
@@ -72,14 +41,14 @@ nav,
   position: relative;
   font-weight: 700;
   letter-spacing: 2px;
-  color: #131200;
+  color: black;
   text-align: center;
 }
 
 .today-date {
   font-size: 2rem;
   font-weight: 500;
-  color: #ff7f11;
+  color: grey;
 }
 
 .today-date span {
@@ -95,11 +64,11 @@ nav,
 }
 
 .social-media li a {
-  color: white;
+  color: black;
 }
 
 .social-media li a:hover {
-  color: #131200;
+  opacity: 0.5;
 }
 /* headerstyling */
 /* aboutstyling */
@@ -147,11 +116,10 @@ nav,
   position: absolute;
   bottom: -7%;
   left: 50%;
-  font-style: italic;
   font-weight: 500;
-  color: #ff7f11;
+  color: black;
   padding: 0.5rem 1rem;
-  background: #131200;
+  background: white;
   border-radius: 20px;
 }
 
@@ -159,7 +127,7 @@ nav,
   text-align: center;
   font-size: 1rem;
   line-height: 1.5rem;
-  color: white;
+  color: black;
 }
 /* aboutstyling */
 /* footerstyling */
@@ -167,13 +135,10 @@ footer {
   width: 100%;
   padding: 1.5rem 1rem;
   text-align: center;
-  color: #ff7f11;
+  color: grey;
 }
-
-footer i {
-  color: red;
-}
-
+/* footerstyling */
+/* responsive */
 @media only screen and (max-width: 950px) {
   .about-container {
     width: 90%;
@@ -204,4 +169,28 @@ footer i {
     display: none;
   }
 }
-/* footerstyling */
+/* responsive */
+/* supposed to be parralax */
+.bg1 {
+  background-image: url(./bg.png);
+  background-attachment: fixed;
+  background-size: cover;
+  height: 100vh;
+}
+
+.bg1:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 60vh;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to top, white, rgba(0, 0, 0, 0));
+}
+
+.bg2 {
+  background-color: white;
+  background-attachment: fixed;
+  background-size: cover;
+}
+/* supposed to be parralax */

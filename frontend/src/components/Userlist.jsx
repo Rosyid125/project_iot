@@ -21,9 +21,9 @@ const Userlist = () => {
 
   return (
     <div>
-      <h1 className="title">Users</h1>
+      <h1 className="title pt-5">Users</h1>
       <h2 className="subtitle">List of Users</h2>
-      <Link to="/users/add" className="button is-primary mb-2">
+      <Link to="/users/add" className="button is-success mb-2">
         Add New
       </Link>
       <table className="table is-striped is-fullwidth">
