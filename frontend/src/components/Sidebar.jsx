@@ -39,10 +39,10 @@ const Sidebar = () => {
           </div>
         )}
 
-        <p className="menu-label">Settings</p>
+        <p className="menu-label">Logout</p>
         <ul className="menu-list">
           <li>
-            <button onClick={logout} className="button is-white">
+            <button onClick={logout} className="button is-warning">
               <IoLogOut /> Logout
             </button>
           </li>

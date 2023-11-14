@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import logodashboard from "../logodashboard.png";
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
 
@@ -20,7 +19,7 @@ const Navbar = () => {
       <nav className="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <NavLink to="/dashboard" className="navbar-item">
-            <img src={logodashboard} width="100%" height="100%" alt="logodashboard" />
+            <div className="has-text-black">Dashboard</div>
           </NavLink>
 
           <a href="!#" role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -34,8 +33,8 @@ const Navbar = () => {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <button onClick={logout} className="button is-success">
-                  Log out
+                <button onClick={logout} className="button is-warning">
+                  Logout
                 </button>
               </div>
             </div>

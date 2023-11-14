@@ -8,9 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.auth
-  );
+  const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (user || isSuccess) {
@@ -32,36 +30,21 @@ const Login = () => {
             <div className="column is-4">
               <form onSubmit={Auth} className="box">
                 {isError && <p className="has-text-centered">{message}</p>}
-                <h1 className="title is-2">Sign In</h1>
+                <h1 className="title is-2">Login</h1>
                 <div className="field">
                   <label className="label">Email</label>
                   <div className="control">
-                    <input
-                      type="text"
-                      className="input"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Email"
-                    />
+                    <input type="text" className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                   </div>
                 </div>
                 <div className="field">
                   <label className="label">Password</label>
                   <div className="control">
-                    <input
-                      type="password"
-                      className="input"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="******"
-                    />
+                    <input type="password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="******" />
                   </div>
                 </div>
                 <div className="field mt-5">
-                  <button
-                    type="submit"
-                    className="button is-success is-fullwidth"
-                  >
+                  <button type="submit" className="button is-warning is-fullwidth">
                     {isLoading ? "Loading..." : "Login"}
                   </button>
                 </div>

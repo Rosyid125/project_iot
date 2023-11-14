@@ -16,28 +16,13 @@ function LandingPage() {
               <img src={logolanding} alt="logolanding" />
             </a>
           </h1>
-          <a href="/login" class="btn-sign-in">
-            Sign In
+          <a href="/login" className="button is-warning">
+            Login
           </a>
         </nav>
         <div class="header-title">Automatic Roof Controller</div>
-        <div class="header-bottom">
-          <p class="today-date">
-            09 <span> /28</span>
-          </p>
-          <ul class="social-media">
-            <li>
-              <a href="">Youtube</a>
-            </li>
-            <li>
-              <a href="">Instagram</a>
-            </li>
-            <li>
-              <a href="">X</a>
-            </li>
-          </ul>
-        </div>
-        <div class="">
+        <div class="look-down">Scroll kebawah untuk informasi lebih lanjut</div>
+        <div>
           <div class="container">
             <div class="columns">
               <div class="column is-6 is-offset-6"></div>
@@ -66,13 +51,39 @@ function LandingPage() {
                 <h2 class="iot">Gambar IoT 4</h2>
               </div>
             </div>
-            <div class="about-info">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima ex labore laborum pariatur odit ad dolores, exercitationem impedit culpa itaque error ab aliquid consequatur molestias minus ipsam dicta veritatis sequi.
+            <div class="about-desc">
+              <div class="about-headers">Apa itu INTERNET OF ROOFTOP?</div>
+              INTERNET OF ROOFTOP merupakan proyek atap Bergerak Otomatis yang bertujuan untuk memberikan solusi cerdas dalam mengelola atap, dengan fokus utama pada otomatisasi penutupan saat hujan atau malam hari. Konsep di balik proyek
+              ini adalah memanfaatkan sensor hujan dan sensor cahaya untuk mengoptimalkan penggunaan atap, memberikan kenyamanan dan efisiensi energi.
+            </div>
+            <div class="about-tech">
+              <div class="about-headers">komponen apa yang digunakan?</div>
+              <li>ESP8266 NodeMCU: Sebagai mikrokontroler utama untuk mengendalikan perangkat dan menghubungkannya ke internet.</li>
+              <li>Sensor Hujan dan Sensor Cahaya: Untuk mendeteksi kondisi cuaca dan keadaan lingkungan sekitar.</li>
+              <li>Servo Motor: Digunakan untuk menggerakkan atap berdasarkan kondisi yang terdeteksi.</li>
+              <li>Breadboard, Kabel Female to Male, dan Male to Male: Untuk menyusun sirkuit dengan rapi dan mudah diatur.</li>
+              <li>Kabel USB dan Adapter: Untuk memberikan daya pada sistem</li>
+            </div>
+            <div class="about-how">
+              <div class="about-headers">Cara kerja sistem?</div>
+              Atap bergerak berinteraksi dengan lingkungan sekitarnya melalui sensor hujan dan sensor cahaya. Saat sensor hujan mendeteksi kelembapan yang tinggi atau sensor cahaya menunjukkan bahwa sudah malam, NodeMCU akan memberikan
+              perintah kepada servo motor untuk menutup atap secara otomatis. Sebaliknya, jika kondisi cuaca baik, atap akan terbuka.
+            </div>
+            <div class="about-feature">
+              <div class="about-headers">Fitur pada sistem?</div>
+              <li>Otomatisasi Penuh: Atap bergerak merespons secara otomatis terhadap kondisi cuaca dan waktu hari.</li>
+              <li>Pengendalian Jarak Jauh: Pantau dan kendalikan status atap melalui dashboard web.</li>
+              <li>Manual Override: Matikan fungsi sensor dan kendalikan atap secara manual melalui antarmuka pengguna.</li>
+            </div>
+            <div class="about-web">
+              <div class="about-headers">Yang dapat dilakukan/dilihat di dashboard?</div>
+              Aplikasi web kami memberikan antarmuka yang intuitif dan mudah digunakan. Pengguna dapat melihat status atap (terbuka/tertutup) secara real-time, mengaktifkan atau menonaktifkan sensor otomatisasi, serta mengendalikan atap
+              secara manual jika diperlukan.
             </div>
           </div>
         </section>
         {/* <!-- footerstructure --> */}
-        <footer>Made by Rosyid and Daffa</footer>
+        <footer>Dibuat oleh Rosyid Ferdiansyah dan Daffa Muhammad I.</footer>
       </section>
     </div>
   );

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monitoring Sensor dan Servo</title>
+  </head>
+  <body>
+    <h1>Monitoring Sensor dan Servo</h1>
+    <p>Status Sensor: <span id="sensorStatus"></span></p>
+    <p>Status Servo: <span id="servoStatus"></span></p>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const sensorStatus = document.getElementById("sensorStatus");
+      const servoStatus = document.getElementById("servoStatus");
+
+      socket.on("data", (data) => {
+        if (data.topic === "sensor") {
+          sensorStatus.textContent = data.message;
+        } else if (data.topic === "servo") {
+          servoStatus.textContent = data.message;
+        }
+      });
+    </script>
+  </body>
+</html>

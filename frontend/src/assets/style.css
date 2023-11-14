@@ -13,26 +13,8 @@ nav,
 }
 
 .logo {
-  width: 50px;
-  height: 50px;
-}
-
-.logo:hover {
-  opacity: 0.5;
-}
-
-.btn-sign-in {
-  padding: 0.7rem 2rem;
-  background: #08cc94;
-  color: white;
-  font-weight: 500;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
-.btn-sign-in:hover {
-  background: #08c48c;
-  color: white;
+  width: 175px;
+  height: 175px;
 }
 
 .header-title {
@@ -44,32 +26,15 @@ nav,
   color: black;
   text-align: center;
 }
-
-.today-date {
-  font-size: 2rem;
-  font-weight: 500;
-  color: grey;
-}
-
-.today-date span {
-  font-size: 1.5rem;
-}
-
-.social-media {
-  display: flex;
-  list-style: none;
-  width: 350px;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.social-media li a {
+.look-down {
+  font-size: 1rem;
+  padding-top: 1rem;
   color: black;
+  margin: auto auto;
+  position: relative;
+  text-align: center;
 }
 
-.social-media li a:hover {
-  opacity: 0.5;
-}
 /* headerstyling */
 /* aboutstyling */
 #about {
@@ -123,9 +88,41 @@ nav,
   border-radius: 20px;
 }
 
-.about-info {
-  text-align: center;
+.about-headers {
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.about-desc {
   font-size: 1rem;
+  line-height: 1.5rem;
+  color: black;
+}
+
+.about-tech {
+  font-size: 1rem;
+  padding-top: 1rem;
+  line-height: 1.5rem;
+  color: black;
+}
+
+.about-how {
+  font-size: 1rem;
+  padding-top: 1rem;
+  line-height: 1.5rem;
+  color: black;
+}
+
+.about-feature {
+  font-size: 1rem;
+  padding-top: 1rem;
+  line-height: 1.5rem;
+  color: black;
+}
+
+.about-web {
+  font-size: 1rem;
+  padding-top: 1rem;
   line-height: 1.5rem;
   color: black;
 }
@@ -172,7 +169,7 @@ footer {
 /* responsive */
 /* supposed to be parralax */
 .bg1 {
-  background-image: url(./bg.png);
+  background-image: url(./bg.jpg);
   background-attachment: fixed;
   background-size: cover;
   height: 100vh;
