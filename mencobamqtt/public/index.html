@@ -1,26 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Monitoring Sensor dan Servo</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket MQTT Demo</title>
   </head>
   <body>
-    <h1>Monitoring Sensor dan Servo</h1>
-    <p>Status Sensor: <span id="sensorStatus"></span></p>
-    <p>Status Servo: <span id="servoStatus"></span></p>
+    <h1>MQTT Topics</h1>
+    <ul id="mqtt-data"></ul>
 
-    <script src="/socket.io/socket.io.js"></script>
     <script>
-      const socket = io();
-      const sensorStatus = document.getElementById("sensorStatus");
-      const servoStatus = document.getElementById("servoStatus");
+      const socket = new WebSocket("ws://localhost:3000");
 
-      socket.on("data", (data) => {
-        if (data.topic === "sensor") {
-          sensorStatus.textContent = data.message;
-        } else if (data.topic === "servo") {
-          servoStatus.textContent = data.message;
+      socket.addEventListener("message", (event) => {
+        const data = JSON.parse(event.data);
+        const ul = document.getElementById("mqtt-data");
+
+        // Create or update list item for each topic
+        let li = document.getElementById(data.topic);
+        if (!li) {
+          li = document.createElement("li");
+          li.id = data.topic;
+          ul.appendChild(li);
         }
+
+        // Update text content based on the received message
+        li.textContent = `${getTopicLabel(data.topic)}: ${data.message}`;
       });
+
+      // Helper function to get a user-friendly label for each topic
+      function getTopicLabel(topic) {
+        switch (topic) {
+          case "sensor":
+            return "Status sensor";
+          case "servo":
+            return "Status servo";
+          case "nilaiSensor":
+            return "Nilai sensor/Kelembaban sensor";
+          default:
+            return topic;
+        }
+      }
     </script>
   </body>
 </html>

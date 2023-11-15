@@ -1,45 +1,42 @@
 const express = require("express");
 const http = require("http");
-const socketIo = require("socket.io");
+const WebSocket = require("ws");
 const mqtt = require("mqtt");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const wss = new WebSocket.Server({ server });
 
-// Inisialisasi MQTT client
-const mqttClient = mqtt.connect("mqtt://127.0.0.1"); // Ganti dengan alamat broker MQTT Anda
+// MQTT configuration
+const mqttBroker = "mqtt://127.0.0.1";
+const mqttTopicSensor = "sensor";
+const mqttTopicServo = "servo";
+const mqttTopicNilaiSensoor = "nilaiSensor";
 
-// Middleware untuk menangani permintaan statis
-app.use(express.static("public"));
+const mqttClient = mqtt.connect(mqttBroker);
 
-// Setel server web untuk mendengarkan port tertentu
-const port = 3000;
-server.listen(port, () => {
-  console.log(`Server berjalan di http://localhost:${port}`);
+mqttClient.on("connect", () => {
+  mqttClient.subscribe([mqttTopicSensor, mqttTopicServo, mqttTopicNilaiSensoor]);
 });
 
-// Mengatur rute untuk tampilan web
+wss.on("connection", (ws) => {
+  ws.on("close", () => {
+    console.log("WebSocket closed");
+  });
+});
+
+mqttClient.on("message", (topic, message) => {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({ topic, message: message.toString() }));
+    }
+  });
+});
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-// Menangani koneksi soket
-io.on("connection", (socket) => {
-  console.log("Klien terhubung");
-
-  // Menerima data dari mikrokontrol melalui MQTT
-  mqttClient.subscribe("sensor");
-  mqttClient.subscribe("servo");
-
-  mqttClient.on("message", (topic, message) => {
-    if (topic === "sensor" || topic === "servo") {
-      socket.emit("data", { topic, message: message.toString() });
-    }
-  });
-
-  // Menangani pemutusan koneksi
-  socket.on("disconnect", () => {
-    console.log("Klien terputus");
-  });
+server.listen(3000, () => {
+  console.log("Server listening on port 3000");
 });
