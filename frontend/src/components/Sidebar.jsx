@@ -22,7 +22,7 @@ const Sidebar = () => {
         <ul className="menu-list">
           <li>
             <NavLink to={"/dashboard"}>
-              <IoHome /> Dashboard
+              <IoHome /> Control
             </NavLink>
           </li>
         </ul>
