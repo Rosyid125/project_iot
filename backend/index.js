@@ -8,6 +8,18 @@ import authRoute from "./router/authRoute.js";
 import SequelizStore from "connect-session-sequelize";
 import bodyParser from "body-parser";
 import mqttRoute from "./router/mqttRoute.js";
+import http from "http";
+import { Server } from "socket.io";
+import mqtt from "mqtt";
+
+// mqtt coy
+const client = mqtt.connect("mqtt://127.0.0.1");
+client.on("connect", () => {
+  console.log("index mqtt konek coy");
+  client.subscribe("sensor");
+  client.subscribe("servo");
+  client.subscribe("nilaiSensor");
+});
 
 dotenv.config();
 
@@ -18,6 +30,29 @@ const sessionStore = SequelizStore(session.Store);
 
 const store = new sessionStore({
   db: db,
+});
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*", // allow to everyone
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("woy ono seng terhubung");
+  client.on("message", (topic, message) => {
+    if (topic == "sensor") {
+      console.log("sensor data: " + message.toString());
+      socket.emit("sensor", message.toString());
+    } else if (topic == "servo") {
+      console.log("servo data: " + message.toString());
+      socket.emit("servo", message.toString());
+    } else if (topic == "nilaiSensor") {
+      console.log("nilai sensor data: " + message.toString());
+      socket.emit("nilaiSensor", message.toString());
+    }
+  });
 });
 
 app.use(
@@ -45,7 +80,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(userRoute);
 app.use(authRoute);
 app.use(mqttRoute);
+// app.use(router);
 
-app.listen(process.env.app_port, () => {
-  console.log("server is running on port 8080");
+server.listen(process.env.app_port, () => {
+  console.log("server is running on port 8080 🚀");
 });

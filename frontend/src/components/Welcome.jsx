@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+// import io from "socket.io-client";
+import { io } from "socket.io-client";
 
 const Welcome = () => {
   const [sensor, setSensor] = useState([]);
@@ -8,22 +10,22 @@ const Welcome = () => {
   const [nilai, setNilai] = useState([]);
 
   const { user } = useSelector((state) => state.auth);
+  const socket = io("http://localhost:8080");
+  socket.on("connect", () => {
+    console.log("connected");
+  });
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/mqtt");
-        setSensor(response.data.sensorData);
-        setServo(response.data.servoData);
-        setNilai(response.data.nilaiSensorData);
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response.data.msg);
-        }
-      }
-    };
-    getData();
-  }, []);
+  socket.on("sensor", (data) => {
+    setSensor(data);
+  });
+
+  socket.on("servo", (data) => {
+    setServo(data);
+  });
+
+  socket.on("nilaiSensor", (data) => {
+    setNilai(data);
+  });
 
   return (
     <div>

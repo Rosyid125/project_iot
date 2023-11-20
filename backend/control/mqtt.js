@@ -11,7 +11,7 @@ const wss = new WebSocket.Server({ server });
 const mqttBroker = "mqtt://127.0.0.1";
 const mqttTopicSensor = "sensor";
 const mqttTopicServo = "servo";
-const mqttTopicNilaiSensoor = "nilaiSensor";
+const mqttTopicNilaiSensor = "nilaiSensor";
 
 const mqttClient = mqtt.connect(mqttBroker);
 
@@ -25,7 +25,7 @@ let nilaiSensorData = null;
 mqttClient.on("connect", () => {
   mqttClient.subscribe(mqttTopicSensor);
   mqttClient.subscribe(mqttTopicServo);
-  mqttClient.subscribe(mqttTopicNilaiSensoor);
+  mqttClient.subscribe(mqttTopicNilaiSensor);
 
   console.log("MQTT Connected");
 });
@@ -36,27 +36,10 @@ mqttClient.on("message", (topic, message) => {
     sensorData = message.toString();
   } else if (topic === mqttTopicServo) {
     servoData = message.toString();
-  } else if (topic === mqttTopicNilaiSensoor) {
+  } else if (topic === mqttTopicNilaiSensor) {
     nilaiSensorData = message.toString();
   }
 });
-
-// function handleMqttData() {
-//   console.log("Sensor Data:", sensorData);
-//   console.log("Servo Data:", servoData);
-//   console.log("Nilai Sensor Data:", nilaiSensorData);
-
-//   // Perform additional actions or processing based on the updated data
-//   // ...
-// }
-
-// mqttClient.on("message", (topic, message) => {
-//   if (topic === mqttTopicServo) {
-//     // Log the received message for the "servo" topic
-//     console.log(`Received message on ${topic}: ${message.toString()}`);
-//     // Add your logic to handle the servo data here
-//   }
-// });
 
 mqttClient.on("error", (error) => {
   console.error("MQTT Connection Error:", error);
@@ -80,9 +63,9 @@ mqttClient.on("message", (topic, message) => {
   });
 });
 
+
 export const dataMqtt = async (req, res) => {
   try {
-    // Instead of sending the topic values, send the values from your MQTT configuration
     res.status(200).json({
       sensorData,
       servoData,
