@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 // import io from "socket.io-client";
 import { io } from "socket.io-client";
+import "../assets/control.css";
 
 const Welcome = () => {
   const [sensor, setSensor] = useState([]);
@@ -57,6 +58,22 @@ const Welcome = () => {
               <h4 className="title is-1">{nilai}</h4>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="controlSwitch">
+        <div className="button-control col">
+          <h3>Switch Servo</h3>
+          <label className="switch">
+            <input type="checkbox" id="SwitchOnOff" />
+            <span className="Slider switchOnOff"></span>
+          </label>
+        </div>
+        <div className="button-control col">
+          <h3>Switch Servo</h3>
+          <label className="switch">
+            <input type="checkbox" id="SwitchOnOff" />
+            <span className="Slider switchOnOff"></span>
+          </label>
         </div>
       </div>
     </div>
