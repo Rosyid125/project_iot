@@ -12,13 +12,19 @@ const mqttBroker = "mqtt://127.0.0.1";
 const mqttTopicSensor = "sensor";
 const mqttTopicServo = "servo";
 const mqttTopicNilaiSensor = "nilaiSensor";
-
+const mqttTopicToggleSensor = "toggleSensor";
+const mqttTopicToggleServo = "toggleServo";
+const mqttTopicToggleSensorIn = "toggleSensorOut";
+const mqttTopicToggleServoIn = "toggleServoOut";
 const mqttClient = mqtt.connect(mqttBroker);
 
 // Global variables to store MQTT data
 let sensorData = null;
 let servoData = null;
 let nilaiSensorData = null;
+
+let toggleBtnServoActive;
+let toggleBtnSensorActive;
 
 //mqtt connect sekaligus handlenya
 
@@ -63,7 +69,6 @@ mqttClient.on("message", (topic, message) => {
   });
 });
 
-
 export const dataMqtt = async (req, res) => {
   try {
     res.status(200).json({
@@ -76,3 +81,30 @@ export const dataMqtt = async (req, res) => {
     res.status(500).json({ msg: "Internal Server Error" });
   }
 };
+
+export const dataMqttSensor = async (req, res) => {
+  try {
+    toggleBtnSensorActive = !toggleBtnSensorActive;
+    const message = toggleBtnSensorActive ? "isOn" : "isOff";
+    mqttClient.publish(mqttTopicToggleSensor, message);
+    res.status(200).json({
+      message: `Sent ${message} to MQTT broker`,
+    });
+  } catch (error) {
+    console.error("MQTT Publish Error:", error);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
+export const dataMqttServo = async (req,res)=>{
+  try {
+    toggleBtnServoActive = !toggleBtnServoActive;
+    const message = toggleBtnServoActive ? "isOn" : "isOff";
+    mqttClient.publish(mqttTopicToggleServo, message);
+    res.status(200).json({
+      message: `Sent ${message} to MQTT broker`,
+    })
+  } catch (error) {
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+}
