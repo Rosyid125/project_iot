@@ -11,6 +11,12 @@ const Welcome = () => {
   const [nilai, setNilai] = useState([]);
   const [toggleSensor, setToggleSensor] = useState(false);
   const [toggleServo, setToggleServo] = useState(false);
+  const handleToggleClick = () => {
+    // Only toggle the state if toggleSensor is false
+    if (!toggleSensor) {
+      setToggleServo((prevToggleServo) => !prevToggleServo);
+    }
+  };
 
   // const { user } = useSelector((state) => state.auth);
   const socket = io("http://localhost:8080");
@@ -62,8 +68,8 @@ const Welcome = () => {
 
   return (
     <div>
-      {/* <h1 className="title pt-5">Control</h1>
-      <h2 className="subtitle ">
+      <h1 className="title pt-5">Control</h1>
+      {/* <h2 className="subtitle ">
         Welcome Back <strong>{user && user.name}</strong>
       </h2> */}
       <div className="columns">
@@ -112,17 +118,8 @@ const Welcome = () => {
         <div className="button-control col">
           <h3>Switch Servo</h3>
           <label className="switch">
-            <input type="checkbox" id="toggleBtnServo" />
-            <span
-              className="Slider switchOnOff"
-              onClick={() => {
-                if (toggleServo == false) {
-                  setToggleServo(true);
-                } else {
-                  setToggleServo(false);
-                }
-              }}
-            ></span>
+            <input type="checkbox" id="toggleBtnServo" disabled={toggleSensor} />
+            <span className={`Slider switchOnOff ${toggleSensor ? "disabled" : ""}`} onClick={handleToggleClick} style={{ opacity: toggleSensor ? "0.5" : "1" }}></span>
           </label>
         </div>
       </div>

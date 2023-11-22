@@ -25,34 +25,33 @@ client.on("connect", () => {
   client.publish("toggleServo");
 });
 
-//create table
-// db.query("CREATE TABLE IF NOT EXISTS toggle_state_sensor (state VARCHAR(255))", (err) => {
-//   if (err) {
-//     console.error("Error creating toggle_state_sensor table:", err);
-//   }
-// });
+db.query("CREATE TABLE IF NOT EXISTS toggle_state_sensor (state VARCHAR(255))", (err) => {
+  if (err) {
+    console.error("Error creating toggle_state_sensor table:", err);
+  }
+});
 
-// db.query("CREATE TABLE IF NOT EXISTS toggle_state_servo (state VARCHAR(255))", (err) => {
-//   if (err) {
-//     console.error("Error creating toggle_state_servo table:", err);
-//   }
-// });
+db.query("CREATE TABLE IF NOT EXISTS toggle_state_servo (state VARCHAR(255))", (err) => {
+  if (err) {
+    console.error("Error creating toggle_state_servo table:", err);
+  }
+});
 
 function updateDatabaseSensor(status) {
-  db.query("UPDATE togle_state_sensor SET state = ?", [status], (err) => {
+  db.query("UPDATE toggle_state_sensor SET state = ?", [status], (err) => {
     if (err) {
       console.error("Error updating toggle_state_sensor table:", err);
     }
   });
 }
 
-function updateDatabaseServo(status) {
-  db.query("UPDATE togle_state_servo SET state = ?", [status], (err) => {
-    if (err) {
-      console.error("Error updating toggle_state_servo table:", err);
-    }
-  });
-}
+// function updateDatabaseServo(status) {
+//   db.query("UPDATE toggle_state_servo SET state = ?", [status], (err) => {
+//     if (err) {
+//       console.error("Error updating toggle_state_servo table:", err);
+//     }
+//   });
+// }
 
 dotenv.config();
 
@@ -82,23 +81,20 @@ io.on("connection", (socket) => {
   socket.on("toggleSensor", (data) => {
     client.publish("toggleSensor", data);
   });
-  
+
   client.on("message", (topic, message) => {
     if (topic == "sensor") {
-      console.log("sensor data: " + message.toString());
       socket.emit("sensor", message.toString());
     } else if (topic == "servo") {
-      console.log("servo data: " + message.toString());
       socket.emit("servo", message.toString());
     } else if (topic == "nilaiSensor") {
-      console.log("nilai sensor data: " + message.toString());
       socket.emit("nilaiSensor", message.toString());
     } else if (topic == "toggleSensorOut") {
       const status = message.toString();
-      updateDatabaseSensor(status);
+      // updateDatabaseSensor(status);
     } else if (topic == "toggleServoOut") {
       const status = message.toString();
-      updateDatabaseServo(status);
+      // updateDatabaseServo(status);
     } else if (topic == "toggleSensor") {
       console.log("toggleSensor data: " + message.toString());
       socket.emit("toggleSensor", message.toString());
