@@ -9,8 +9,9 @@ const Welcome = () => {
   const [sensor, setSensor] = useState([]);
   const [servo, setServo] = useState([]);
   const [nilai, setNilai] = useState([]);
-  const [toggleSensor, setToggleSensor] = useState(false);
-  const [toggleServo, setToggleServo] = useState(false);
+  const [toggleSensor, setToggleSensor] = useState([]);
+  const [toggleServo, setToggleServo] = useState([]);
+
   const handleToggleClick = () => {
     // Only toggle the state if toggleSensor is false
     if (!toggleSensor) {
@@ -36,6 +37,14 @@ const Welcome = () => {
     setNilai(data);
   });
 
+  socket.on("toggleSensor", (data) => {
+    setToggleSensor(data);
+  });
+
+  socket.on("toggleServo", (data) => {
+    setToggleServo(data);
+  });
+
   useEffect(() => {
     if (toggleServo == true) {
       socket.emit("toggleServo", "isOn");
@@ -43,6 +52,7 @@ const Welcome = () => {
       socket.emit("toggleServo", "isOff");
     }
   }, [toggleServo]);
+
   useEffect(() => {
     if (toggleSensor == true) {
       socket.emit("toggleSensor", "isOn");
@@ -50,21 +60,6 @@ const Welcome = () => {
       socket.emit("toggleSensor", "isOff");
     }
   }, [toggleSensor]);
-
-  // toggleBtnSensor.addEventListener("click", () => {
-  //   if (toggleBtnSensor.checked) {
-  //     socket.emit("toggleSensor", "isOn");
-  //   } else {
-  //     socket.emit("toggleSensor", "isOff");
-  //   }
-  // });
-  // toggleBtnServo.addEventListener("click", () => {
-  //   if (toggleBtnServo.checked) {
-  //     socket.emit("toggleServo", "isOn");
-  //   } else {
-  //     socket.emit("toggleServo", "isOff");
-  //   }
-  // });
 
   return (
     <div>
