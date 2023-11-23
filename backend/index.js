@@ -40,45 +40,46 @@ client.on("connect", () => {
 //   }
 // });
 
-function updateDatabaseSensor(status) {
-  if (status == "true") {
-    db.query("UPDATE toggle_state_sensor SET state = true", (err, results) => {
-      if (err) {
-        console.error("Error updating toggle_state_sensor table:", err);
-      } else {
-        console.log("Update successful. Rows affected: " + results.affectedRows);
-      }
-    });
-  } else if (status == "false") {
-    db.query("UPDATE toggle_state_sensor SET state = false", (err, results) => {
-      if (err) {
-        console.error("Error updating toggle_state_sensor table:", err);
-      } else {
-        console.log("Update successful. Rows affected: " + results.affectedRows);
-      }
-    });
-  }
-}
+// // sementara di matikan dulu
+// function updateDatabaseSensor(status) {
+//   if (status == "true") {
+//     db.query("UPDATE toggle_state_sensor SET state = true", (err, results) => {
+//       if (err) {
+//         console.error("Error updating toggle_state_sensor table:", err);
+//       } else {
+//         console.log("Update successful. Rows affected: " + results.affectedRows);
+//       }
+//     });
+//   } else if (status == "false") {
+//     db.query("UPDATE toggle_state_sensor SET state = false", (err, results) => {
+//       if (err) {
+//         console.error("Error updating toggle_state_sensor table:", err);
+//       } else {
+//         console.log("Update successful. Rows affected: " + results.affectedRows);
+//       }
+//     });
+//   }
+// }
 
-function updateDatabaseServo(status) {
-  if (status == "true") {
-    db.query("UPDATE toggle_state_servo SET state = true", (err, results) => {
-      if (err) {
-        console.error("Error updating toggle_state_servo table:", err);
-      } else {
-        console.log("Update successful. Rows affected: " + results.affectedRows);
-      }
-    });
-  } else if (status == "false") {
-    db.query("UPDATE toggle_state_servo SET state = false", (err, results) => {
-      if (err) {
-        console.error("Error updating toggle_state_servo table:", err);
-      } else {
-        console.log("Update successful. Rows affected: " + results.affectedRows);
-      }
-    });
-  }
-}
+// function updateDatabaseServo(status) {
+//   if (status == "true") {
+//     db.query("UPDATE toggle_state_servo SET state = true", (err, results) => {
+//       if (err) {
+//         console.error("Error updating toggle_state_servo table:", err);
+//       } else {
+//         console.log("Update successful. Rows affected: " + results.affectedRows);
+//       }
+//     });
+//   } else if (status == "false") {
+//     db.query("UPDATE toggle_state_servo SET state = false", (err, results) => {
+//       if (err) {
+//         console.error("Error updating toggle_state_servo table:", err);
+//       } else {
+//         console.log("Update successful. Rows affected: " + results.affectedRows);
+//       }
+//     });
+//   }
+// }
 
 const app = express();
 dotenv.config();
@@ -123,12 +124,12 @@ io.on("connection", (socket) => {
       socket.emit("nilaiSensor", message.toString());
     } else if (topic == "toggleSensorOut") {
       const status = message.toString();
-      updateDatabaseSensor(status);
-      console.log(status);
+      // updateDatabaseSensor(status);
+      // console.log(status);
     } else if (topic == "toggleServoOut") {
       const status = message.toString();
-      updateDatabaseServo(status);
-      console.log(status);
+      // updateDatabaseServo(status);
+      // console.log(status);
     } else if (topic == "toggleSensor") {
       console.log("toggleSensor data: " + message.toString());
       socket.emit("toggleSensor", message.toString());
@@ -138,30 +139,30 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Fetch initial toggle states and send them to the connected client
-  db.query("SELECT * FROM toggle_state_sensor", (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-    } else {
-      console.log("Query results:", results);
-      if (results.length > 0) {
-        toggleSensor = results[0].state;
-        socket.emit("toggleSensor", toggleSensor);
-      }
-    }
-  });
+  //   // Fetch initial toggle states and send them to the connected client
+  //   db.query("SELECT * FROM toggle_state_sensor", (err, results) => {
+  //     if (err) {
+  //       console.error("Error executing query:", err);
+  //     } else {
+  //       console.log("Query results:", results);
+  //       if (results.length > 0) {
+  //         toggleSensor = results[0].state;
+  //         socket.emit("toggleSensor", toggleSensor);
+  //       }
+  //     }
+  //   });
 
-  db.query("SELECT * FROM toggle_state_servo", (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-    } else {
-      console.log("Query results:", results);
-      if (results.length > 0) {
-        toggleServo = results[0].state;
-        socket.emit("toggleServo", toggleServo);
-      }
-    }
-  });
+  //   db.query("SELECT * FROM toggle_state_servo", (err, results) => {
+  //     if (err) {
+  //       console.error("Error executing query:", err);
+  //     } else {
+  //       console.log("Query results:", results);
+  //       if (results.length > 0) {
+  //         toggleServo = results[0].state;
+  //         socket.emit("toggleServo", toggleServo);
+  //       }
+  //     }
+  //   });
 });
 
 app.use(
