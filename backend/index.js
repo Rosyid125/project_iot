@@ -11,9 +11,25 @@ import mqttRoute from "./router/mqttRoute.js";
 import http from "http";
 import { Server } from "socket.io";
 import mqtt from "mqtt";
+import mysql from "mysql";
 
 let toggleSensor = false; // Initialize to false by default
 let toggleServo = false; // Initialize to false by default
+
+const bd = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "project_iot",
+});
+
+bd.connect((err) => {
+  if (err) {
+    console.error("Error connecting to MySQL database:", err);
+    return;
+  }
+  console.log("Connected to MySQL database");
+});
 
 // mqtt coy
 const client = mqtt.connect("mqtt://127.0.0.1");
@@ -139,30 +155,33 @@ io.on("connection", (socket) => {
     }
   });
 
-  //   // Fetch initial toggle states and send them to the connected client
-  //   db.query("SELECT * FROM toggle_state_sensor", (err, results) => {
-  //     if (err) {
-  //       console.error("Error executing query:", err);
-  //     } else {
-  //       console.log("Query results:", results);
-  //       if (results.length > 0) {
-  //         toggleSensor = results[0].state;
-  //         socket.emit("toggleSensor", toggleSensor);
-  //       }
-  //     }
-  //   });
 
-  //   db.query("SELECT * FROM toggle_state_servo", (err, results) => {
-  //     if (err) {
-  //       console.error("Error executing query:", err);
-  //     } else {
-  //       console.log("Query results:", results);
-  //       if (results.length > 0) {
-  //         toggleServo = results[0].state;
-  //         socket.emit("toggleServo", toggleServo);
-  //       }
-  //     }
-  //   });
+  // Fetch initial toggle states and send them to the connected client
+  bd.query("SELECT * FROM toggle_state_sensor", (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+    } else {
+      if (results.length > 0) {
+        toggleSensor = results[0].state;
+        socket.emit("toggleSensor", toggleSensor);
+        console.log(toggleSensor);
+      }
+    }
+  });
+
+  bd.query("SELECT * FROM toggle_state_servo", (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+    } else {
+      console.log("Query results:", results);
+      if (results.length > 0) {
+        toggleServo = results[0].state;
+        socket.emit("toggleServo", toggleServo);
+        console.log(toggleServo);
+      }
+    }
+  });
+
 });
 
 app.use(
