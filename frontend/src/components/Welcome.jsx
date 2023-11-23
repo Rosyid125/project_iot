@@ -1,7 +1,4 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-// import io from "socket.io-client";
 import { io } from "socket.io-client";
 import "../assets/control.css";
 
@@ -37,13 +34,9 @@ const Welcome = () => {
     setNilai(data);
   });
 
-  socket.on("toggleSensor", (data) => {
-    setToggleSensor(data);
-  });
+  socket.on("toggleSensor", (data) => {});
 
-  socket.on("toggleServo", (data) => {
-    setToggleServo(data);
-  });
+  socket.on("toggleServo", (data) => {});
 
   useEffect(() => {
     if (toggleServo == true) {
