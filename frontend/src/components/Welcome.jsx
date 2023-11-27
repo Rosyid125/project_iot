@@ -27,10 +27,6 @@ const Welcome = () => {
     socket.on("nilaiSensor", (data) => {
       setNilai(data);
     });
-
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   useEffect(() => {
@@ -39,10 +35,6 @@ const Welcome = () => {
     } else {
       socket.emit("toggleSensor", "isOff");
     }
-
-    return () => {
-      socket.disconnect();
-    };
   }, [toggleSensor]);
 
   useEffect(() => {
@@ -51,10 +43,6 @@ const Welcome = () => {
     } else {
       socket.emit("toggleServo", "isOff");
     }
-
-    return () => {
-      socket.disconnect();
-    };
   }, [toggleServo]);
 
   const handleToggleClick = () => {
