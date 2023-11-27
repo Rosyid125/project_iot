@@ -9,42 +9,25 @@ const Welcome = () => {
   const [toggleSensor, setToggleSensor] = useState([]);
   const [toggleServo, setToggleServo] = useState([]);
 
-  const handleToggleClick = () => {
-    // Only toggle the state if toggleSensor is false
-    if (!toggleSensor) {
-      setToggleServo((prevToggleServo) => !prevToggleServo);
-    }
-  };
-
-  // const { user } = useSelector((state) => state.auth);
   const socket = io("http://localhost:8080");
-  socket.on("connect", () => {
-    console.log("connected");
-  });
-
-  socket.on("sensor", (data) => {
-    setSensor(data);
-  });
-
-  socket.on("servo", (data) => {
-    setServo(data);
-  });
-
-  socket.on("nilaiSensor", (data) => {
-    setNilai(data);
-  });
-
-  socket.on("toggleSensor", (data) => {});
-
-  socket.on("toggleServo", (data) => {});
 
   useEffect(() => {
-    if (toggleServo == true) {
-      socket.emit("toggleServo", "isOn");
-    } else {
-      socket.emit("toggleServo", "isOff");
-    }
-  }, [toggleServo]);
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+
+    socket.on("sensor", (data) => {
+      setSensor(data);
+    });
+
+    socket.on("servo", (data) => {
+      setServo(data);
+    });
+
+    socket.on("nilaiSensor", (data) => {
+      setNilai(data);
+    });
+  }, []);
 
   useEffect(() => {
     if (toggleSensor == true) {
@@ -54,12 +37,28 @@ const Welcome = () => {
     }
   }, [toggleSensor]);
 
+  useEffect(() => {
+    if (toggleServo == true) {
+      socket.emit("toggleServo", "isOn");
+    } else {
+      socket.emit("toggleServo", "isOff");
+    }
+  }, [toggleServo]);
+
+  const handleToggleClick = () => {
+    // Only toggle the state if toggleSensor is false
+    if (!toggleSensor) {
+      if (toggleServo == false) {
+        setToggleServo(true);
+      } else {
+        setToggleServo(false);
+      }
+    }
+  };
+
   return (
     <div>
       <h1 className="title pt-5">Control</h1>
-      {/* <h2 className="subtitle ">
-        Welcome Back <strong>{user && user.name}</strong>
-      </h2> */}
       <div className="columns">
         <div className="column">
           <div className="box">
