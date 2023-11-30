@@ -13,21 +13,33 @@ const Welcome = () => {
 
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("connected");
+      console.log("connected, pada useEffect sensor");
     });
 
     socket.on("sensor", (data) => {
       setSensor(data);
     });
+  }, [sensor]);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected, pada useEffect servo");
+    });
 
     socket.on("servo", (data) => {
       setServo(data);
+    });
+  }, [servo]);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected, pada useEffect nilai");
     });
 
     socket.on("nilaiSensor", (data) => {
       setNilai(data);
     });
-  }, []);
+  }, [nilai]);
 
   useEffect(() => {
     if (toggleSensor == true) {
@@ -70,7 +82,7 @@ const Welcome = () => {
         </div>
         <div className="column">
           <div className="box">
-            <h3 className="title is-5">Status Servor</h3>
+            <h3 className="title is-5">Status Servo</h3>
             <div className="content">
               <h4 className="title is-1">{servo}</h4>
             </div>
