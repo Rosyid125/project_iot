@@ -13,33 +13,29 @@ const Welcome = () => {
 
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("connected, pada useEffect sensor");
+      console.log("connected to the received data");
     });
 
     socket.on("sensor", (data) => {
       setSensor(data);
     });
-  }, [sensor]);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("connected, pada useEffect servo");
-    });
 
     socket.on("servo", (data) => {
       setServo(data);
-    });
-  }, [servo]);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("connected, pada useEffect nilai");
     });
 
     socket.on("nilaiSensor", (data) => {
       setNilai(data);
     });
-  }, [nilai]);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
+
+  console.log(servo);
+  console.log(sensor);
+  console.log(nilai);
 
   useEffect(() => {
     if (toggleSensor == true) {
