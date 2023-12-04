@@ -18,8 +18,6 @@ client.on("connect", () => {
   client.subscribe("sensor");
   client.subscribe("servo");
   client.subscribe("nilaiSensor");
-  client.publish("toggleSensor");
-  client.publish("toggleServo");
 });
 
 const app = express();

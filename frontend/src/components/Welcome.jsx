@@ -6,8 +6,8 @@ const Welcome = () => {
   const [sensor, setSensor] = useState([]);
   const [servo, setServo] = useState([]);
   const [nilai, setNilai] = useState([]);
-  const [toggleSensor, setToggleSensor] = useState([]);
-  const [toggleServo, setToggleServo] = useState([]);
+  const [toggleSensor, setToggleSensor] = useState(null); //set null untuk handle mount component supaya tidak mengirim topic ke mikrokontroller
+  const [toggleServo, setToggleServo] = useState(null); //sama kek yang diatas
 
   const socket = io("http://localhost:8080");
 
@@ -43,24 +43,28 @@ const Welcome = () => {
 
   useEffect(() => {
     if (toggleSensor == true) {
-      socket.emit("toggleSensor", "isOn");
+      socket.emit("toggleSensor", "sensorIsOn");
+    } else if (toggleSensor == false) {
+      socket.emit("toggleSensor", "sensorIsOff");
     } else {
-      socket.emit("toggleSensor", "isOff");
+      console.log("nothing to emit on toggleSensor, it's still null, try to push the switch again");
     }
   }, [toggleSensor]);
 
   useEffect(() => {
     if (toggleServo == true) {
-      socket.emit("toggleServo", "isOn");
+      socket.emit("toggleServo", "servoIsOn");
+    } else if (toggleServo == false) {
+      socket.emit("toggleServo", "servoIsOff");
     } else {
-      socket.emit("toggleServo", "isOff");
+      console.log("nothing to emit on toggleServo, it's still null, try to push the switch again");
     }
   }, [toggleServo]);
 
   const handleToggleClick = () => {
     // Only toggle the state if toggleSensor is false
     if (!toggleSensor) {
-      if (toggleServo == false) {
+      if (toggleServo == false || toggleServo == null) {
         setToggleServo(true);
       } else {
         setToggleServo(false);
@@ -105,7 +109,7 @@ const Welcome = () => {
             <span
               className="Slider switchOnOff"
               onClick={() => {
-                if (toggleSensor == false) {
+                if (toggleSensor == false || toggleSensor == null) {
                   setToggleSensor(true);
                 } else {
                   setToggleSensor(false);
