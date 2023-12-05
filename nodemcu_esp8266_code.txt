@@ -1,0 +1,152 @@
+#include <Servo.h>
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
+
+const char* ssid = "Rosyid";
+const char* password = "qwertyuiop";
+const char* mqtt_server = "192.168.137.1";
+const char* mqtt_topic_sensor = "sensor";
+const char* mqtt_topic_servo = "servo";
+const char* mqtt_topic_nilaiSensor = "nilaiSensor";
+const char* mqtt_topic_toggleSensor = "toggleSensor";
+const char* mqtt_topic_toggleServo = "toggleServo";
+String lastToggleSensorData;
+String lastToggleServoData;
+String receivedData;
+char sensorValueStr[10];
+
+const int sensorPin = A0;
+const int servoPin = D4;
+Servo myservo;                // Objek servo
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+char messeges[10];
+
+void setup() {
+  myservo.attach(servoPin);   // Hubungkan servo ke pin D4
+  pinMode(sensorPin, INPUT);  // Set pin sensor sebagai input
+  Serial.begin(9600);         // Aktifkan komunikasi serial
+
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
+  //initial state dari toggle ketika mikrokontroller pertamakali berjalan
+  lastToggleSensorData = "sensorIsOff";
+  lastToggleServoData = "servoIsOff";
+}
+
+void setup_wifi() {
+  delay(10);
+  Serial.println();
+  Serial.print("Connecting to WiFi");
+
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    if (client.connect("ESP8266Client")) {
+      Serial.println("connected");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      delay(5000);
+    }
+  }
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  // Konversi payload menjadi string
+  payload[length] = '\0'; // Pastikan string diakhiri dengan null character
+  receivedData = String((char*)payload);
+
+  // Cek kondisi berdasarkan topik
+  if (strcmp(topic, mqtt_topic_toggleSensor) == 0) {
+    lastToggleSensorData = receivedData;
+  } else if (strcmp(topic, mqtt_topic_toggleServo) == 0) {
+    lastToggleServoData = receivedData;
+  }
+}
+
+void loop() {
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WiFi connection lost. Reconnecting...");
+    setup_wifi();
+  }
+
+  if (!client.connected()) {
+    reconnect();
+  }
+
+  int sensorValue = analogRead(sensorPin);  // Baca nilai dari sensor hujan
+
+  client.subscribe(mqtt_topic_toggleSensor);
+
+  client.loop();
+
+  int threshold = 800; //nilai tengah dari sensor
+
+  if (lastToggleSensorData.equals("sensorIsOn")) {
+
+    Serial.println("Sensor diaktifkan");
+
+      if (sensorValue >= threshold) {
+
+      myservo.write(180);
+      Serial.println("Hujan terdeteksi. Servo terbuka.");
+      Serial.print("Nilai sensor hujan: ");
+      Serial.println(sensorValue);
+      itoa(sensorValue, sensorValueStr, 10); //Konversi int to string
+      client.publish(mqtt_topic_sensor, "Hujan tidak terdeteksi");
+      client.publish(mqtt_topic_servo, "Terbuka");
+      client.publish(mqtt_topic_nilaiSensor, sensorValueStr);
+    } else {
+
+      myservo.write(0);
+      Serial.println("Tidak ada hujan. Servo tertutup.");
+      Serial.print("Nilai sensor hujan: ");
+      Serial.println(sensorValue);
+      itoa(sensorValue, sensorValueStr, 10); //Konversi int to string
+      client.publish(mqtt_topic_sensor, "Hujan terdeteksi");
+      client.publish(mqtt_topic_servo, "Tertutup");
+      client.publish(mqtt_topic_nilaiSensor, sensorValueStr);
+    }
+  } else if (lastToggleSensorData.equals("sensorIsOff")) {
+    
+    Serial.println("Sensor dinonaktifkan");
+    client.publish(mqtt_topic_nilaiSensor, "Fungsi sensor dimatikan, tidak ada nilai");
+    client.publish(mqtt_topic_sensor, "Fungsi sensor dimatikan");
+
+    client.subscribe(mqtt_topic_toggleServo);
+
+    client.loop();
+
+    if (lastToggleServoData.equals("servoIsOn")) {
+
+      Serial.println("Servo diaktifkan secara manual");
+      myservo.write(180);
+      client.publish(mqtt_topic_servo, "Terbuka");
+
+    } else if (lastToggleServoData.equals("servoIsOff")) {
+
+      Serial.println("Servo dinonaktifkan secara manual");
+      myservo.write(0);
+      client.publish(mqtt_topic_servo, "Tertutup");
+    }
+  };
+
+  delay(1000);
+}
