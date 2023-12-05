@@ -31,11 +31,7 @@ const Welcome = () => {
     return () => {
       socket.disconnect();
     };
-  }, [socket]);
-
-  console.log(servo);
-  console.log(sensor);
-  console.log(nilai);
+  }, []);
 
   useEffect(() => {
     if (toggleSensor == true) {
@@ -71,6 +67,9 @@ const Welcome = () => {
   return (
     <div>
       <h1 className="title pt-5">Control</h1>
+      <div>
+        <p className="mb-2">Jika data yang masuk ataupun tombol terasa lambat, klik refresh page!</p>
+      </div>
       <div className="columns">
         <div className="column">
           <div className="box">
